@@ -14,27 +14,7 @@ const char WHITE = 1;
 char[] MESSAGE = "checkpoint2.3.kc kaur0497!";
 
 void main(){
-	//intialize screen memory, and select correct font
-	*VIC_MEMORY = 0x14;
-	//fill the screen with spaces
-	memset(SCREEN, ' ', 40*25);
-	//set the colour of every character on the screen the white
-	memset(COLS, WHITE, 40*25);
-	////print the "hello world!" message
-	char* sc = SCREEN+40; //display it one line down on the screen
-	char* msg = MESSAGE; //the messag to display
-	// a simple copy routine to copy the string
-	while(*msg){
-		*sc++ = *msg++;
-	}
-   //loop forever showing two white lines as raster bars
-  while(true){
-  if(*RASTER==54 || *RASTER==66) {
-  *BGCOL = WHITE;
-  } else {
-*BGCOL = BLACK;
-}
-}
+	// moved to reset()
 }
 // here are a couple sample SYSCALL handlers that just display a character on the screen
 void syscall1(){
@@ -371,8 +351,7 @@ const char JMP = 0x4c; const char NOP = 0xea;
 // In this example we had only two SYSCALLs defined, so rather than having
 // another 62 lines, we can just ask KickC to make the TRAP table begin
 // at the next multiple of $100, i.e., at $8100.
-export align(0x100) struct Syscall[] SYSCALL_RESET = { 
-{ JMP, &main, NOP },
+export align(0x100) struct Syscall[] TRAPS = { 
 { JMP, &RESET, NOP },
 { JMP, &PAGFAULT, NOP },
 { JMP, &RESTORKEY, NOP },
